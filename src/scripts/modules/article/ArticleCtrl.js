@@ -1,9 +1,11 @@
 angular.module('arb.modules.article.ArticleCtrl', [
-  'arb.modules.article.ArticleLayout'
+  'arb.modules.article.ArticleLayout',
+  'arb.common.resources.ArbRest',
+  'ngMockE2E'
 ])
 
-.controller('ArticleCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'Page', 'Auth', 'Notifications', 'ArbRest',
-  function ($scope, $rootScope, $state, $stateParams, Page, Auth, Notifications, ArbRest) {
+.controller('ArticleCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'Page', 'Auth', 'Notifications', 'ArbRest', '$httpBackend', 
+  function ($scope, $rootScope, $state, $stateParams, Page, Auth, Notifications, ArbRest, $httpBackend) {
     
     var Articles = ArbRest.all('article');
     Page.set('title', 'Article');
@@ -43,6 +45,7 @@ angular.module('arb.modules.article.ArticleCtrl', [
     };
 
     this.find = function () {
+      console.log($httpBackend.xhr)
       Articles.getList()
         .then(function (articles) {
           $scope.articles = articles;

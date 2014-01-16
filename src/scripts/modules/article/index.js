@@ -2,5 +2,6 @@
 angular.module('arb.modules.article', [
   "arb.modules.article.ArticleCtrl",
   "arb.modules.article.ArticleLayout",
+  "arb.modules.article.ArticleMock",
   "arb.modules.article.comment"
 ]);

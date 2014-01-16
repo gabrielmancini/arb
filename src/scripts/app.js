@@ -1,7 +1,6 @@
 angular.module('arb', [
   'arb.constants',
   "arb.common.resources.ArbRest",
-  "arb.common.resources.ArbRestMock",
   'arb.common',
   'arb.modules',
   'arb.templates.cache'

@@ -44,7 +44,7 @@ describe('<Unit Test> ArticleCtrl', function() {
         })
       );
 
-      it('should be able to save without problems', 
+      iit('should be able to save without problems', 
         inject(function ($rootScope, $state, conf) {
           $state.transitionTo('article.create');
 
@@ -59,7 +59,7 @@ describe('<Unit Test> ArticleCtrl', function() {
         inject(function ($rootScope, $state, conf) {
           $state.transitionTo('article.create');
 
-          $scope.title = 'title of article';
+          $scope.title = undefined;
           $scope.contents = 'contents of article';
 
           ArticleCtrl.create($state, $scope);

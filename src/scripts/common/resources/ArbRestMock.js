@@ -2,14 +2,16 @@ angular.module('arb.common.resources.ArbRestMock', ['ngMockE2E'])
 
 .run(['$httpBackend', '$timeout', '$log', 'conf', 'sessionStorage',
   function ($httpBackend, $timeout, $log, conf, sessionStorage) {
+
+    console.log('ArbRest Called')
     var baseUrl = conf.getApiUrl();
     var authorized = sessionStorage.get('authenticated');
-    var userData = { id: '1234567890', username: 'user', role: ['moderator'] };
 
-    function getIdFromResource(resource, url) {
+    var getIdFromResource = function (resource, url) {
       return url.split('/').pop().replace(resource, '');
-    }
+    };
 
+    var userData = { id: '1234567890', username: 'user', role: ['moderator'] };
     /**
      * Session API
      */
@@ -45,50 +47,6 @@ angular.module('arb.common.resources.ArbRestMock', ['ngMockE2E'])
         return [200];
       });
 
-    /**
-     * Article API
-     */
-
-    // /article
-    // /article/
-    // /article/[a-z0-9]
-    $httpBackend.when('GET', new RegExp(baseUrl + '/article(\/\w+)?'))
-      .respond(function (method, url, data, headers) {
-        var id = getIdFromResource('article', url);
-        var articles = JSON.parse(sessionStorage.get('articles')) || [];
-        var result = id ? articles[id-1] : articles;
-
-        $log.info(method, baseUrl + '/article');
-
-        if (!authorized) {
-          return [401, { error: 'You are not logged in.' }];
-        } else {
-          return [200, result];
-        }
-      });
-
-    $httpBackend.when('POST', baseUrl + '/article')
-      .respond(function (method, url, data) {
-        var articles = JSON.parse(sessionStorage.get('articles')) || [];
-        var parsedData = JSON.parse(data);
-
-        var newArticle = {
-          _id: articles.length + 1,
-          title: parsedData.title,
-          content: parsedData.content,
-          created: new Date()
-        };
-
-        $log.info(method, baseUrl + '/article');
-
-        if (!authorized) {
-          return [401, { error: 'You are not logged in.' }];
-        } else {
-          articles.push(newArticle);
-          sessionStorage.set('articles', JSON.stringify(articles));
-          return [200, newArticle];
-        }
-      });
 
     // $httpBackend.whenPOST(baseUrl + 'data/protected').respond(function (method, url, data) {
     //   return authorized ? [200, 'This is confidential [' + data + '].'] : [401];
@@ -97,5 +55,6 @@ angular.module('arb.common.resources.ArbRestMock', ['ngMockE2E'])
     // otherwise
     $httpBackend.when('GET', /.*/).passThrough();
     $httpBackend.when('POST', /.*/).passThrough();
+
   }
 ]);

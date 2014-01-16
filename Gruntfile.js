@@ -91,7 +91,8 @@ module.exports = function (grunt) {
           livereload: true,
           middleware: function (connect) {
             return [mountFolder(connect, '.')];
-          }
+          },
+          open: true,
         }
       },
       coverage: {
